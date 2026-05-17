@@ -1272,19 +1272,19 @@ ul {
   color: var(--ix-sky);
 }
 
-.pill--ai {
-  color: var(--ix-purple);
-}
-
-.pill--development {
+.pill--backend {
   color: var(--ix-violet);
 }
 
-.pill--devops {
+.pill--identity {
+  color: var(--ix-purple);
+}
+
+.pill--tooling {
   color: var(--ix-text-soft);
 }
 
-.pill--data {
+.pill--frontend {
   color: var(--ix-sky);
 }
 
@@ -1924,6 +1924,47 @@ a.footer__link:hover::after {
   display: flex;
   align-items: center;
   gap: 0.7rem;
+}
+
+.header__lang-switch {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  border-radius: 10px;
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid var(--ix-border);
+}
+
+.header__lang-btn {
+  min-width: 34px;
+  height: 32px;
+  padding: 0 0.45rem;
+  border: 0;
+  background: transparent;
+  border-radius: 8px;
+  color: var(--ix-text-soft);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.header__lang-btn:hover {
+  color: var(--ix-sky);
+}
+
+.header__lang-btn.is-active {
+  color: #06090f;
+  background: var(--ix-gradient);
+  box-shadow:
+    0 6px 18px rgba(56, 189, 248, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+[data-theme='light'] .header__lang-btn.is-active {
+  color: #ffffff;
 }
 
 .header__icon-btn {
