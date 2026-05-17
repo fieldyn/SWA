@@ -1,7 +1,11 @@
 import { Logo } from './Logo'
+import { useLanguage } from '@/hooks/useLanguage'
 
 export function Footer() {
   const year = new Date().getFullYear()
+  const { content } = useLanguage()
+  const footer = content.footer
+  const sitemapLinks = content.header.navLinks
 
   return (
     <footer className="footer">
@@ -18,56 +22,52 @@ export function Footer() {
               <span className="footer__tld">.com</span>
             </span>
           </a>
-          <p className="footer__tagline">
-            A studio building cloud, AI, and modern .NET systems
-            for teams who care about craft.
-          </p>
+          <p className="footer__tagline">{footer.tagline}</p>
           <div className="footer__badge">
             <span className="footer__badge-dot" />
-            Available for Q2 engagements
+            {footer.badge}
           </div>
         </div>
 
         <nav className="footer__nav">
           <div className="footer__col">
-            <h4 className="footer__col-title">Sitemap</h4>
-            <a href="#services" className="footer__link">
-              Services
-            </a>
-            <a href="#about" className="footer__link">
-              About
-            </a>
-            <a href="#technology" className="footer__link">
-              Technology
-            </a>
-            <a href="#contact" className="footer__link">
-              Contact
-            </a>
+            <h4 className="footer__col-title">{footer.sitemapTitle}</h4>
+            {sitemapLinks.map((link) => (
+              <a key={link.href} href={link.href} className="footer__link">
+                {link.label}
+              </a>
+            ))}
           </div>
 
           <div className="footer__col">
-            <h4 className="footer__col-title">Capabilities</h4>
-            <span className="footer__link footer__link--static">Cloud architecture</span>
-            <span className="footer__link footer__link--static">AI &amp; ML</span>
-            <span className="footer__link footer__link--static">.NET engineering</span>
-            <span className="footer__link footer__link--static">Platform &amp; DevOps</span>
+            <h4 className="footer__col-title">{footer.capabilityTitle}</h4>
+            {footer.capabilities.map((capability) => (
+              <span key={capability} className="footer__link footer__link--static">
+                {capability}
+              </span>
+            ))}
           </div>
 
           <div className="footer__col">
-            <h4 className="footer__col-title">Connect</h4>
-            <a href="mailto:info@innovatiox.com" className="footer__link">
-              info@innovatiox.com
-            </a>
-            <a href="https://innovatiox.com" target="_blank" rel="noopener" className="footer__link">
-              innovatiox.com
-            </a>
+            <h4 className="footer__col-title">{footer.connectTitle}</h4>
+            {footer.connectLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                target={link.external ? '_blank' : undefined}
+                rel={link.external ? 'noopener' : undefined}
+                className="footer__link"
+              >
+                {link.label}
+              </a>
+            ))}
           </div>
         </nav>
       </div>
 
       <div className="ix-container footer__bottom">
-        <p className="footer__copy">© {year} InnovatioX · All rights reserved</p>
-        <p className="footer__location">Built with care · Cloud · AI · .NET</p>
+        <p className="footer__copy">© {year} InnovatioX · {footer.copyrightSuffix}</p>
+        <p className="footer__location">{footer.bottomTagline}</p>
       </div>
     </footer>
   )
