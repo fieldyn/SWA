@@ -2,20 +2,16 @@ import { useState } from 'react'
 import type { CSSProperties } from 'react'
 
 import { Logo } from './Logo'
+import { useLanguage } from '@/hooks/useLanguage'
 import { useTheme } from '@/hooks/useTheme'
 import { useScrollState } from '@/hooks/useScrollState'
 
-const navLinks = [
-  { label: 'Services', href: '#services' },
-  { label: 'About', href: '#about' },
-  { label: 'Technology', href: '#technology' },
-  { label: 'Contact', href: '#contact' },
-]
-
 export function Header() {
   const { theme, toggle } = useTheme()
+  const { language, setLanguage, content } = useLanguage()
   const { scrolled, progress } = useScrollState(32)
   const [menuOpen, setMenuOpen] = useState(false)
+  const header = content.header
   const navStyle: CSSProperties & { ['--header-offset']: string } = {
     '--header-offset': `${scrolled ? 60 : 72}px`,
   }
@@ -33,7 +29,12 @@ export function Header() {
       />
 
       <div className="header__inner">
-        <a href="/" className="header__brand" aria-label="InnovatioX home" onClick={() => setMenuOpen(false)}>
+        <a
+          href="/"
+          className="header__brand"
+          aria-label={header.brandAriaLabel}
+          onClick={() => setMenuOpen(false)}
+        >
           <Logo size={34} id="header-mark" />
           <span className="header__wordmark">
             innovatio<span className="ix-grad-text">X</span>
@@ -44,7 +45,7 @@ export function Header() {
           className={`header__nav ${menuOpen ? 'header__nav--open' : ''}`}
           style={navStyle}
         >
-          {navLinks.map((link, index) => (
+          {header.navLinks.map((link, index) => (
             <a
               key={link.href}
               href={link.href}
@@ -59,9 +60,28 @@ export function Header() {
         </nav>
 
         <div className="header__actions">
+          <div
+            className="header__lang-switch"
+            role="group"
+            aria-label={header.languageLabel}
+          >
+            {(['en', 'es'] as const).map((option) => (
+              <button
+                key={option}
+                type="button"
+                className={`header__lang-btn ${language === option ? 'is-active' : ''}`}
+                aria-pressed={language === option}
+                aria-label={`${header.languageLabel}: ${header.languageNames[option]}`}
+                onClick={() => setLanguage(option)}
+              >
+                {option.toUpperCase()}
+              </button>
+            ))}
+          </div>
+
           <button
             className="header__icon-btn"
-            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            aria-label={theme === 'dark' ? header.switchToLight : header.switchToDark}
             onClick={toggle}
           >
             {theme === 'dark' ? (
@@ -84,7 +104,7 @@ export function Header() {
           </button>
 
           <a href="#contact" className="header__cta">
-            <span>Start a project</span>
+            <span>{header.cta}</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="5" y1="12" x2="19" y2="12" />
               <polyline points="12 5 19 12 12 19" />
@@ -93,7 +113,7 @@ export function Header() {
 
           <button
             className="header__burger"
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-label={menuOpen ? header.closeMenu : header.openMenu}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((open) => !open)}
           >

@@ -1,34 +1,22 @@
 import { useMemo, useRef } from 'react'
 
+import { useLanguage } from '@/hooks/useLanguage'
 import { useReveal } from '@/hooks/useReveal'
-
-type Category = 'cloud' | 'ai' | 'development' | 'devops' | 'data'
-
-const techStack: { name: string; category: Category }[] = [
-  { name: '.NET', category: 'development' },
-  { name: 'C#', category: 'development' },
-  { name: 'Blazor', category: 'development' },
-  { name: 'Vue.js', category: 'development' },
-  { name: 'TypeScript', category: 'development' },
-  { name: 'gRPC', category: 'development' },
-  { name: 'Azure', category: 'cloud' },
-  { name: 'AWS', category: 'cloud' },
-  { name: 'Python', category: 'ai' },
-  { name: 'TensorFlow', category: 'ai' },
-  { name: 'OpenAI', category: 'ai' },
-  { name: 'Docker', category: 'devops' },
-  { name: 'Kubernetes', category: 'devops' },
-  { name: 'Terraform', category: 'devops' },
-  { name: 'SQL Server', category: 'data' },
-  { name: 'Cosmos DB', category: 'data' },
-]
 
 export function Technology() {
   const sectionRef = useRef<HTMLElement | null>(null)
   const { isVisible } = useReveal(sectionRef)
+  const { content } = useLanguage()
+  const technology = content.technology
 
-  const rowA = useMemo(() => techStack.filter((_, index) => index % 2 === 0), [])
-  const rowB = useMemo(() => techStack.filter((_, index) => index % 2 === 1), [])
+  const rowA = useMemo(
+    () => technology.techStack.filter((_, index) => index % 2 === 0),
+    [technology.techStack],
+  )
+  const rowB = useMemo(
+    () => technology.techStack.filter((_, index) => index % 2 === 1),
+    [technology.techStack],
+  )
 
   return (
     <section
@@ -40,15 +28,12 @@ export function Technology() {
         <header className="tech__head">
           <span className="tech__eyebrow">
             <span className="tech__eyebrow-bar" />
-            Our stack
+            {technology.eyebrow}
           </span>
           <h2 className="tech__title">
-            Technologies we <em className="ix-grad-text">master.</em>
+            {technology.title} <em className="ix-grad-text">{technology.titleEm}</em>
           </h2>
-          <p className="tech__lead">
-            From cloud platforms to AI frameworks, we choose the right tool
-            for the problem — never the trend.
-          </p>
+          <p className="tech__lead">{technology.lead}</p>
         </header>
       </div>
 
@@ -77,7 +62,7 @@ export function Technology() {
       </div>
 
       <ul className="visually-hidden">
-        {techStack.map((tech) => (
+        {technology.techStack.map((tech) => (
           <li key={tech.name}>{tech.name}</li>
         ))}
       </ul>
