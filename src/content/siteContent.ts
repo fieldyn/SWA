@@ -296,13 +296,13 @@ export const siteContent: Record<Language, SiteContent> = {
       lead:
         "If you're modernizing a platform, tightening identity flows, or shipping integration-heavy .NET work, I can help you move with more confidence in English or Spanish.",
       cta: 'Email Alberto',
-      mailto: 'mailto:fieldyn@gmail.com',
+      mailto: 'mailto:info@innovatiox.com',
       cardSub: 'Alberto Biancardi · Independent .NET consultant',
       channels: [
         {
           label: 'Email',
-          value: 'fieldyn@gmail.com',
-          href: 'mailto:fieldyn@gmail.com',
+          value: 'info@innovatiox.com',
+          href: 'mailto:info@innovatiox.com',
         },
         {
           label: 'LinkedIn',
@@ -336,8 +336,8 @@ export const siteContent: Record<Language, SiteContent> = {
       connectTitle: 'Connect',
       connectLinks: [
         {
-          label: 'fieldyn@gmail.com',
-          href: 'mailto:fieldyn@gmail.com',
+          label: 'info@innovatiox.com',
+          href: 'mailto:info@innovatiox.com',
         },
         {
           label: 'LinkedIn',
@@ -509,13 +509,13 @@ export const siteContent: Record<Language, SiteContent> = {
       lead:
         'Si estas modernizando una plataforma, ajustando flujos de identidad o empujando trabajo .NET intensivo en integraciones, puedo ayudarte a avanzar con mas confianza en ingles o español.',
       cta: 'Escribir a Alberto',
-      mailto: 'mailto:fieldyn@gmail.com',
+      mailto: 'mailto:info@innovatiox.com',
       cardSub: 'Alberto Biancardi · Consultor independiente en .NET',
       channels: [
         {
           label: 'Email',
-          value: 'fieldyn@gmail.com',
-          href: 'mailto:fieldyn@gmail.com',
+          value: 'info@innovatiox.com',
+          href: 'mailto:info@innovatiox.com',
         },
         {
           label: 'LinkedIn',
@@ -549,8 +549,8 @@ export const siteContent: Record<Language, SiteContent> = {
       connectTitle: 'Contacto',
       connectLinks: [
         {
-          label: 'fieldyn@gmail.com',
-          href: 'mailto:fieldyn@gmail.com',
+          label: 'info@innovatiox.com',
+          href: 'mailto:info@innovatiox.com',
         },
         {
           label: 'LinkedIn',
