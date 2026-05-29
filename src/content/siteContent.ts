@@ -133,6 +133,14 @@ export interface SiteContent {
     copyrightSuffix: string
     bottomTagline: string
   }
+  closingCta: {
+    eyebrow: string
+    title: string
+    titleEm: string
+    lead: string
+    cta: string
+    href: string
+  }
 }
 
 export const siteContent: Record<Language, SiteContent> = {
@@ -348,6 +356,15 @@ export const siteContent: Record<Language, SiteContent> = {
       copyrightSuffix: 'All rights reserved',
       bottomTagline: '.NET · Payments · Cloud · English / Español',
     },
+    closingCta: {
+      eyebrow: 'Ready when you are',
+      title: "Let's build something",
+      titleEm: 'worth shipping.',
+      lead:
+        'Senior .NET, payments, identity, and cloud engineering — without the overhead. Tell me what you are modernizing and we will scope it together.',
+      cta: 'Start a conversation',
+      href: '#contact',
+    },
   },
   es: {
     seo: {
@@ -560,6 +577,15 @@ export const siteContent: Record<Language, SiteContent> = {
       ],
       copyrightSuffix: 'Todos los derechos reservados',
       bottomTagline: '.NET · Pagos · Cloud · English / Español',
+    },
+    closingCta: {
+      eyebrow: 'Cuando quieras',
+      title: 'Construyamos algo',
+      titleEm: 'que valga la pena.',
+      lead:
+        'Ingenieria senior en .NET, pagos, identidad y cloud, sin el overhead. Cuentame que estas modernizando y lo planificamos juntos.',
+      cta: 'Iniciar conversacion',
+      href: '#contact',
     },
   },
 }

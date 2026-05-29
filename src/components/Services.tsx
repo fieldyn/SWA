@@ -2,11 +2,13 @@ import { useRef } from 'react'
 import type { CSSProperties } from 'react'
 
 import { useLanguage } from '@/hooks/useLanguage'
+import { usePointerSpotlight } from '@/hooks/usePointerSpotlight'
 import { useReveal } from '@/hooks/useReveal'
 
 export function Services() {
   const sectionRef = useRef<HTMLElement | null>(null)
   const { isVisible } = useReveal(sectionRef)
+  usePointerSpotlight(sectionRef, '.card')
   const { content } = useLanguage()
   const services = content.services
 

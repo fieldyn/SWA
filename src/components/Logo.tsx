@@ -5,6 +5,7 @@ type LogoProps = {
   id?: string
   background?: string
   radiusRatio?: number
+  draw?: boolean
 }
 
 export function Logo({
@@ -12,6 +13,7 @@ export function Logo({
   id,
   background = '#0f172a',
   radiusRatio = 0.22,
+  draw = false,
 }: LogoProps) {
   const reactId = useId().replace(/:/g, '')
   const safeId = id ?? `ix-${reactId}`
@@ -54,7 +56,10 @@ export function Logo({
         strokeWidth="1"
       />
 
-      <g filter={`url(#${safeId}-glow)`}>
+      <g
+        filter={`url(#${safeId}-glow)`}
+        className={`ix-mark__strokes${draw ? ' ix-mark__strokes--draw' : ''}`}
+      >
         <line
           x1="32"
           y1="32"

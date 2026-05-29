@@ -1,9 +1,15 @@
+import { useRef } from 'react'
+import type { CSSProperties } from 'react'
+
 import { Logo } from './Logo'
 import { useLanguage } from '@/hooks/useLanguage'
+import { useTilt } from '@/hooks/useTilt'
 
 export function Hero() {
   const { content } = useLanguage()
   const hero = content.hero
+  const cardRef = useRef<HTMLDivElement | null>(null)
+  useTilt(cardRef)
 
   return (
     <section className="hero">
@@ -23,9 +29,24 @@ export function Hero() {
           </span>
 
           <h1 className="hero__title">
-            {hero.titleIntro}
-            <span className="hero__title-em">{hero.titleAccent}</span>
-            <span className="hero__title-block">{hero.titleOutro}</span>
+            <span
+              className="hero__title-line"
+              style={{ ['--i']: 0 } as CSSProperties & { ['--i']: number }}
+            >
+              {hero.titleIntro}
+            </span>{' '}
+            <span
+              className="hero__title-line hero__title-em"
+              style={{ ['--i']: 1 } as CSSProperties & { ['--i']: number }}
+            >
+              {hero.titleAccent}
+            </span>
+            <span
+              className="hero__title-line hero__title-block"
+              style={{ ['--i']: 2 } as CSSProperties & { ['--i']: number }}
+            >
+              {hero.titleOutro}
+            </span>
           </h1>
 
           <p className="hero__lead">{hero.lead}</p>
@@ -54,9 +75,9 @@ export function Hero() {
         </div>
 
         <div className="hero__visual">
-          <div className="hero__mark-card">
+          <div className="hero__mark-card" ref={cardRef}>
             <div className="hero__mark-frame">
-              <Logo size={220} id="hero-card" />
+              <Logo size={220} id="hero-card" draw />
             </div>
 
             <div className="hero__mark-meta">

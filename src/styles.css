@@ -1,3 +1,21 @@
+@property --ix-grad-angle {
+  syntax: '<angle>';
+  inherits: true;
+  initial-value: 135deg;
+}
+
+@property --spot {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: transparent;
+}
+
+@keyframes ix-grad-rotate {
+  to {
+    --ix-grad-angle: 495deg;
+  }
+}
+
 :root {
   color-scheme: dark;
 
@@ -30,7 +48,11 @@
   --ix-shadow-soft: 0 24px 60px rgba(2, 6, 16, 0.5);
   --ix-shadow-strong: 0 34px 90px rgba(2, 6, 16, 0.7);
 
-  --ix-gradient: linear-gradient(135deg, #38bdf8 0%, #8b5cf6 55%, #a855f7 100%);
+  --ix-grad-angle: 135deg;
+  --ix-gradient: linear-gradient(var(--ix-grad-angle), #38bdf8 0%, #8b5cf6 55%, #a855f7 100%);
+
+  --ix-accent-strong: color-mix(in srgb, var(--ix-violet) 65%, var(--ix-sky));
+  --ix-heading-strong: color-mix(in srgb, var(--ix-text) 86%, #ffffff);
 
   --font-display: 'Newsreader', 'Iowan Old Style', 'Times New Roman', serif;
   --font-body: 'Source Sans 3', system-ui, -apple-system, sans-serif;
@@ -53,6 +75,7 @@
   --ix-surface-elev: #f1f5f9;
   --ix-mark: #0f172a;
   --ix-text: #0f172a;
+  --ix-heading-strong: color-mix(in srgb, var(--ix-text) 88%, #000000);
   --ix-text-soft: #334155;
   --ix-muted: #64748b;
   --ix-subtle: rgba(15, 23, 42, 0.55);
@@ -82,6 +105,7 @@
 html {
   background: var(--ix-bg);
   scroll-behavior: smooth;
+  animation: ix-grad-rotate 16s linear infinite;
 }
 
 body {
@@ -92,9 +116,10 @@ body {
   color: var(--ix-text);
   background: var(--ix-bg);
   background-image:
-    radial-gradient(900px 500px at 8% -8%, rgba(56, 189, 248, 0.12) 0%, transparent 60%),
-    radial-gradient(700px 600px at 95% 8%, rgba(168, 85, 247, 0.1) 0%, transparent 60%),
-    radial-gradient(800px 600px at 50% 105%, rgba(139, 92, 246, 0.08) 0%, transparent 60%);
+    radial-gradient(900px 500px at 8% -8%, rgba(56, 189, 248, 0.16) 0%, transparent 60%),
+    radial-gradient(720px 600px at 95% 6%, rgba(168, 85, 247, 0.14) 0%, transparent 60%),
+    radial-gradient(900px 700px at 50% 108%, rgba(139, 92, 246, 0.12) 0%, transparent 62%),
+    radial-gradient(620px 520px at 78% 48%, rgba(56, 189, 248, 0.06) 0%, transparent 60%);
   line-height: 1.55;
   font-family: var(--font-body);
   font-size: 16px;
@@ -127,6 +152,34 @@ body::before {
 [data-theme='light'] body::before {
   background-image: radial-gradient(circle, rgba(15, 23, 42, 0.18) 1px, transparent 1px);
   opacity: 0.1;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+[data-theme='light'] body::after {
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+}
+
+@media (prefers-reduced-data: reduce) {
+  body::after {
+    display: none;
+  }
+
+  .hero__orb {
+    filter: blur(70px);
+    opacity: 0.22;
+  }
 }
 
 #root {
@@ -364,7 +417,7 @@ ul {
   font-weight: 500;
   line-height: 1.04;
   letter-spacing: -0.02em;
-  color: var(--ix-text);
+  color: var(--ix-heading-strong);
   margin-bottom: 1.6rem;
 }
 
@@ -806,7 +859,7 @@ ul {
   font-weight: 500;
   line-height: 1.08;
   letter-spacing: -0.02em;
-  color: var(--ix-text);
+  color: var(--ix-heading-strong);
 }
 
 .services__intro,
@@ -866,9 +919,17 @@ ul {
 }
 
 @media (min-width: 880px) {
+  .services__grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .card {
+    grid-column: span 2;
+  }
+
   .card--featured {
-    grid-column: 1 / 2;
-    grid-row: 1 / span 2;
+    grid-column: span 4;
+    grid-row: span 2;
   }
 }
 
@@ -2065,7 +2126,355 @@ a.footer__link:hover::after {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
+}
+
+/* ============================================================
+   Modernization layer (change: modernize-landing-visuals)
+   Additive rules; effects gated for reduced-motion / coarse pointers.
+   ============================================================ */
+
+/* --- Micro-interactions: button sheen + press (3.1) --- */
+.contact__cta,
+.header__cta {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero__btn--primary > *,
+.contact__cta > *,
+.header__cta > * {
+  position: relative;
+  z-index: 1;
+}
+
+.hero__btn--primary::after,
+.contact__cta::after,
+.header__cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.45) 50%, transparent 65%);
+  transform: translateX(-130%);
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  pointer-events: none;
+}
+
+.hero__btn--primary:hover::after,
+.contact__cta:hover::after,
+.header__cta:hover::after {
+  transform: translateX(130%);
+}
+
+.hero__btn--primary:active,
+.contact__cta:active,
+.header__cta:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* --- Micro-interactions: pills + links (3.2) --- */
+.pill:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.header__link:active,
+.footer__link:active,
+.card__link:active {
+  opacity: 0.7;
+}
+
+/* --- Pointer spotlight on cards (4.2) --- */
+.card,
+.strength,
+.contact__card {
+  --spot: transparent;
+}
+
+.card {
+  background:
+    radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), var(--spot), transparent 60%),
+    var(--ix-surface);
+  transition: border-color 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease, --spot 0.45s ease;
+}
+
+.revealed .card {
+  transition:
+    opacity 0.7s calc(0.25s + var(--delay)) ease,
+    transform 0.7s calc(0.25s + var(--delay)) cubic-bezier(0.2, 0.7, 0.2, 1),
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    --spot 0.45s ease;
+}
+
+.card--featured {
+  background:
+    radial-gradient(280px circle at var(--mx, 50%) var(--my, 50%), var(--spot), transparent 62%),
+    radial-gradient(800px 360px at 90% 0%, rgba(56, 189, 248, 0.07), transparent 70%),
+    var(--ix-surface);
+}
+
+.card:hover {
+  --spot: color-mix(in srgb, var(--ix-sky) 18%, transparent);
+}
+
+.strength {
+  background:
+    radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), var(--spot), transparent 60%),
+    var(--ix-surface);
+  transition: border-color 0.3s ease, transform 0.3s ease, background 0.3s ease, --spot 0.45s ease;
+}
+
+.revealed .strength {
+  transition:
+    opacity 0.7s calc(0.15s + var(--delay)) ease,
+    transform 0.7s calc(0.15s + var(--delay)) ease,
+    border-color 0.3s ease,
+    --spot 0.45s ease;
+}
+
+.strength:hover {
+  --spot: color-mix(in srgb, var(--ix-violet) 16%, transparent);
+}
+
+.contact__card {
+  background:
+    radial-gradient(280px circle at var(--mx, 50%) var(--my, 50%), var(--spot), transparent 60%),
+    var(--ix-surface);
+  transition: opacity 0.7s 0.25s, transform 0.7s 0.25s, --spot 0.45s ease;
+}
+
+.contact__card:hover {
+  --spot: color-mix(in srgb, var(--ix-purple) 16%, transparent);
+}
+
+/* --- Hero 3D tilt + parallax layers (4.5) --- */
+.hero__visual {
+  perspective: 1100px;
+}
+
+.hero__mark-card {
+  transform: rotate(-2deg) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transform-style: preserve-3d;
+  transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.hero__mark-card:hover {
+  transform: translateY(-6px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero__mark-frame {
+    transform: translateZ(38px);
+  }
+
+  .hero__mark-grid {
+    transform: translateZ(58px);
+  }
+}
+
+/* --- Kinetic hero title reveal (5.1) --- */
+@media (prefers-reduced-motion: no-preference) {
+  .hero__title-line {
+    opacity: 0;
+    filter: blur(7px);
+    animation: ix-title-in 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) calc(0.15s + var(--i, 0) * 0.14s) forwards;
+  }
+}
+
+@keyframes ix-title-in {
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+/* --- Logo stroke draw-in (5.3) --- */
+@media (prefers-reduced-motion: no-preference) {
+  .ix-mark__strokes--draw line {
+    stroke-dasharray: 82;
+    stroke-dashoffset: 82;
+    animation: ix-draw 1s ease forwards;
+  }
+
+  .ix-mark__strokes--draw line:nth-of-type(2) {
+    animation-delay: 0.22s;
+  }
+}
+
+@keyframes ix-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* --- Scroll-linked hero parallax (5.5) --- */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    .hero__watermark {
+      animation: ix-parallax-slow linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100vh;
+    }
+
+    .hero__orbs {
+      animation: ix-parallax-fast linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100vh;
+    }
+  }
+}
+
+@keyframes ix-parallax-slow {
+  to {
+    translate: 0 130px;
+  }
+}
+
+@keyframes ix-parallax-fast {
+  to {
+    translate: 0 70px;
+  }
+}
+
+/* --- Aurora section dividers (6.3) --- */
+.services::before,
+.about::before,
+.tech::before,
+.contact::before,
+.closing-cta::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1100px, 88%);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--ix-violet) 55%, transparent), transparent);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* --- Scroll-spy active nav (6.5) --- */
+.header__link--active {
+  color: var(--ix-text);
+}
+
+.header__link--active .header__link-num {
+  color: var(--ix-sky);
+  opacity: 1;
+}
+
+.header__link--active::after {
+  width: 100%;
+}
+
+/* --- Closing CTA micro-section (6.6) --- */
+.closing-cta {
+  position: relative;
+  padding: clamp(4rem, 9vw, 7rem) 0;
+  overflow: hidden;
+}
+
+.closing-cta__aurora {
+  position: absolute;
+  left: 50%;
+  bottom: -30%;
+  width: min(900px, 92%);
+  height: 480px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--ix-violet) 28%, transparent), transparent 62%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.closing-cta__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 1.3rem;
+  max-width: 720px;
+}
+
+.closing-cta__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--ix-sky);
+}
+
+.closing-cta__eyebrow-bar {
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+}
+
+.closing-cta__title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.8vw, 3.4rem);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--ix-heading-strong);
+}
+
+.closing-cta__title em {
+  font-style: italic;
+}
+
+.closing-cta__lead {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--ix-text-soft);
+  max-width: 560px;
+}
+
+.closing-cta__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 0.4rem;
+  padding: 1rem 1.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #06090f;
+  background: var(--ix-gradient);
+  border-radius: 12px;
+  box-shadow:
+    0 12px 32px rgba(56, 189, 248, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+[data-theme='light'] .closing-cta__btn {
+  color: #ffffff;
+}
+
+.closing-cta__btn:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 18px 44px rgba(168, 85, 247, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.closing-cta__btn svg {
+  transition: transform 0.25s ease;
+}
+
+.closing-cta__btn:hover svg {
+  transform: translateX(3px);
 }
