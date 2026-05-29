@@ -2,11 +2,13 @@ import { useRef } from 'react'
 
 import { Logo } from './Logo'
 import { useLanguage } from '@/hooks/useLanguage'
+import { usePointerSpotlight } from '@/hooks/usePointerSpotlight'
 import { useReveal } from '@/hooks/useReveal'
 
 export function Contact() {
   const sectionRef = useRef<HTMLElement | null>(null)
   const { isVisible } = useReveal(sectionRef)
+  usePointerSpotlight(sectionRef, '.contact__card')
   const { content } = useLanguage()
   const contact = content.contact
 

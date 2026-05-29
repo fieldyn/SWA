@@ -2,15 +2,19 @@ import { useState } from 'react'
 import type { CSSProperties } from 'react'
 
 import { Logo } from './Logo'
+import { useActiveSection } from '@/hooks/useActiveSection'
 import { useLanguage } from '@/hooks/useLanguage'
 import { useTheme } from '@/hooks/useTheme'
 import { useScrollState } from '@/hooks/useScrollState'
+
+const SECTION_IDS = ['services', 'about', 'technology', 'contact']
 
 export function Header() {
   const { theme, toggle } = useTheme()
   const { language, setLanguage, content } = useLanguage()
   const { scrolled, progress } = useScrollState(32)
   const [menuOpen, setMenuOpen] = useState(false)
+  const activeId = useActiveSection(SECTION_IDS)
   const header = content.header
   const navStyle: CSSProperties & { ['--header-offset']: string } = {
     '--header-offset': `${scrolled ? 60 : 72}px`,
@@ -45,18 +49,22 @@ export function Header() {
           className={`header__nav ${menuOpen ? 'header__nav--open' : ''}`}
           style={navStyle}
         >
-          {header.navLinks.map((link, index) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="header__link"
-              style={{ ['--i']: index } as CSSProperties & { ['--i']: number }}
-              onClick={() => setMenuOpen(false)}
-            >
-              <span className="header__link-num">0{index + 1}</span>
-              <span className="header__link-label">{link.label}</span>
-            </a>
-          ))}
+          {header.navLinks.map((link, index) => {
+            const isActive = activeId !== null && link.href === `#${activeId}`
+            return (
+              <a
+                key={link.href}
+                href={link.href}
+                className={`header__link ${isActive ? 'header__link--active' : ''}`}
+                aria-current={isActive ? 'true' : undefined}
+                style={{ ['--i']: index } as CSSProperties & { ['--i']: number }}
+                onClick={() => setMenuOpen(false)}
+              >
+                <span className="header__link-num">0{index + 1}</span>
+                <span className="header__link-label">{link.label}</span>
+              </a>
+            )
+          })}
         </nav>
 
         <div className="header__actions">

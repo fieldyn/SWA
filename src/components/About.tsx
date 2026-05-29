@@ -3,11 +3,13 @@ import type { CSSProperties } from 'react'
 
 import { useLanguage } from '@/hooks/useLanguage'
 import { useCountUp } from '@/hooks/useCountUp'
+import { usePointerSpotlight } from '@/hooks/usePointerSpotlight'
 import { useReveal } from '@/hooks/useReveal'
 
 export function About() {
   const sectionRef = useRef<HTMLElement | null>(null)
   const { isVisible } = useReveal(sectionRef)
+  usePointerSpotlight(sectionRef, '.strength')
   const { content } = useLanguage()
   const about = content.about
   const [yearsStat, paymentsStat, cloudStat, languagesStat] = about.stats
